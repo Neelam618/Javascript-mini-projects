@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic calculator</title>
+</head>
+<body>
+    <center>
+        <div>Calculator</div>
+        <form>
+            Value 1<input type="text" id="value1">
+            Value 2 <input type="text" id="value2">
+            Opertator 
+            <select id="operator">
+                <option value="add">Add</option>
+                <option value="minus">Minus</option>
+                <option value="multiply">Multiply</option>
+                <option value="divide">Divide</option>
+            </select>
+            <button type="button" id="calculate">Calculate</button>
+        </form>
+    
+        <div id="result"></div>
+    </center>
+
+    <script>
+         document.getElementById('calculate').addEventListener('click', calc);  // or add onclick= calc() in button tag
+
+        function calc(){
+            let a = parseInt(document.getElementById('value1').value);   //input is going to b a string. convert string into integer
+            let b = parseInt(document.getElementById('value2').value);   //input is going to b a string. convert string into integer
+            let operator = document.getElementById('operator').value;
+            let result;
+                if( operator == "add"){
+                    result = a+b;
+                }
+                else if(operator == "minus"){
+                    result = a-b;
+                }
+                else if(operator == "multiply"){
+                    result = a*b;
+                }
+                else if(operator == "divide"){
+                    result = a/b;
+                }
+                // console.log(result);
+                document.getElementById('result').innerHTML = result;   // or innerText  
+        }
+
+    </script>
+</body>
+</html>

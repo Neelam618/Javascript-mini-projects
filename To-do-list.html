@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do list</title>
+</head>
+<body>
+        <div class="container">
+            <h1>To-Do List</h1>
+            <form>
+             
+                    <input type="text" id="input">
+                    <button type="button" id="btn">Add</button>
+            
+            </form>
+            <ol id="list"></ol>
+        </div>
+
+
+    <script>
+        document.getElementById('btn').addEventListener('click', add);
+
+        function add(){
+            let input = document.getElementById('input').value;   //grabs inputted text
+            let newText = document.createTextNode(input);      // creates text node 
+            let newElement = document.createElement('li');    //creates new li tag in html doc
+            newElement.appendChild(newText);         // joins text inside tags
+            document.getElementById('list').appendChild(newElement);
+            document.getElementById('input').value = "";
+        }
+
+
+
+    </script>
+</body>
+</html>
