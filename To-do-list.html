@@ -9,16 +9,16 @@
         <div class="container">
             <h1>To-Do List</h1>
                     <input type="text" id="input">
-                    <button type="button" id="btn">Add</button>
+                    <button type="button" id="addBtn">Add</button>
             <ol id="list"></ol>
         </div>
 
 
     <script>
         input.focus();
-
+ 
         //Add click event listener to button and call function
-        document.getElementById('btn').addEventListener('click', addUsingInnerHtml);
+        document.getElementById('addBtn').addEventListener('click', verifyAndAdd);
 
         function add(){
             let inputValue = document.getElementById('input').value;   //grabs inputted text value
@@ -41,8 +41,17 @@
             //focus on input box
             input.focus();
         }
-
-        //Alternative function
+        function verifyAndAdd(){
+            if(input.value == ""){
+                alert("Input is empty");
+                input.focus();
+            }
+            else{
+                add();
+            }
+        }
+        
+        //Alternative function to add()
         function addUsingInnerHtml(){
             let inputValue = document.getElementById('input').value;   //grabs inputted text
     
@@ -50,7 +59,6 @@
             listElement.innerHTML = listElement.innerHTML + `
                 <li>${inputValue} <button onclick = "deleteRow()">Delete</button></li>
             `;
-    
             // clear input box
             document.getElementById('input').value = "";
 
@@ -61,8 +69,21 @@
         //Delete list item
         function deleteRow(){
             event.target.parentNode.remove();    //OR this.parentNode.remove();          //'this' here is delete button element 
+            // console.log(event.target);
             input.focus();            
         }
+        
+        //click add button on keyboard enter
+
+        // Execute a function when the user releases a key on the keyboard
+        input.addEventListener("keyup", function(event) {                                  //you can also remove event parameter and it works
+            // Number 13 is the "Enter" key on the keyboard
+            if(event.keyCode === 13){                                   
+            // Trigger the add button element with a click
+            verifyAndAdd();
+            }
+        });
+
 
     </script>
 </body>
