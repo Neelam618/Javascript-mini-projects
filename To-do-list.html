@@ -8,17 +8,15 @@
 <body>
         <div class="container">
             <h1>To-Do List</h1>
-            <form>
-             
                     <input type="text" id="input">
                     <button type="button" id="btn">Add</button>
-            
-            </form>
             <ol id="list"></ol>
         </div>
 
 
     <script>
+        input.focus();
+
         //Add click event listener to button and call function
         document.getElementById('btn').addEventListener('click', addUsingInnerHtml);
 
@@ -38,9 +36,10 @@
 
             // join li element in ol
             document.getElementById('list').appendChild(liElement);
-    
             // clear input box
             document.getElementById('input').value = "";
+            //focus on input box
+            input.focus();
         }
 
         //Alternative function
@@ -54,11 +53,15 @@
     
             // clear input box
             document.getElementById('input').value = "";
-        }
 
+            //focus on input box
+            input.focus();
+
+        }
         //Delete list item
         function deleteRow(){
-            event.target.parentNode.remove();            //OR this.parentNode.remove();          //'this' here is delete button element 
+            event.target.parentNode.remove();    //OR this.parentNode.remove();          //'this' here is delete button element 
+            input.focus();            
         }
 
     </script>
