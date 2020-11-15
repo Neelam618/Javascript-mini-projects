@@ -19,40 +19,47 @@
 
 
     <script>
+        //Add click event listener to button and call function
         document.getElementById('btn').addEventListener('click', addUsingInnerHtml);
 
         function add(){
-            let inputValue = document.getElementById('input').value;   //grabs inputted text
+            let inputValue = document.getElementById('input').value;   //grabs inputted text value
     
-            //creates new li tag in html doc
+            //creates new li tag in ol
             let liElement = document.createElement('li');
             liElement.innerText = inputValue;
 
-            // add delete btn
+            // add delete btn in li element
             let deleteBtn = document.createElement('button');
             deleteBtn.innerText = "Delete";
+            deleteBtn.addEventListener('click', deleteRow);
+            //join button element inside li element
             liElement.appendChild(deleteBtn);
 
-            // append li element
+            // join li element in ol
             document.getElementById('list').appendChild(liElement);
     
             // clear input box
             document.getElementById('input').value = "";
         }
 
+        //Alternative function
         function addUsingInnerHtml(){
             let inputValue = document.getElementById('input').value;   //grabs inputted text
     
             let listElement = document.getElementById('list');
             listElement.innerHTML = listElement.innerHTML + `
-                <li>${inputValue} <button>Delete</button> </li>
+                <li>${inputValue} <button onclick = "deleteRow()">Delete</button></li>
             `;
     
             // clear input box
             document.getElementById('input').value = "";
         }
 
-        
+        //Delete list item
+        function deleteRow(){
+            event.target.parentNode.remove();            //OR this.parentNode.remove();          //'this' here is delete button element 
+        }
 
     </script>
 </body>
