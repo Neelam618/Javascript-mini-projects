@@ -20,7 +20,7 @@
         //Add click event listener to button and call function
         document.getElementById('addBtn').addEventListener('click', verifyAndAdd);
 
-        function add(){
+        function createLiElement(){
             let inputValue = document.getElementById('input').value;   //grabs inputted text value
     
             //creates new li tag in ol
@@ -33,14 +33,33 @@
             deleteBtn.addEventListener('click', deleteRow);
             //join button element inside li element
             liElement.appendChild(deleteBtn);
+            return liElement;
 
+        }
+
+        function add(){
             // join li element in ol
-            document.getElementById('list').appendChild(liElement);
+            document.getElementById('list').appendChild(createLiElement());
             // clear input box
             document.getElementById('input').value = "";
             //focus on input box
             input.focus();
         }
+        // //Alternative function to add()
+        // function addUsingInnerHtml(){
+        //     let inputValue = document.getElementById('input').value;   //grabs inputted text
+    
+        //     let listElement = document.getElementById('list');
+        //     listElement.innerHTML = listElement.innerHTML + `
+        //         <li>${inputValue} <button onclick = "deleteRow()">Delete</button></li>
+        //     `;
+        //     // clear input box
+        //     document.getElementById('input').value = "";
+
+        //     //focus on input box
+        //     input.focus();
+        // }
+
         function verifyAndAdd(){
             if(input.value == ""){
                 alert("Input is empty");
@@ -51,21 +70,6 @@
             }
         }
         
-        //Alternative function to add()
-        function addUsingInnerHtml(){
-            let inputValue = document.getElementById('input').value;   //grabs inputted text
-    
-            let listElement = document.getElementById('list');
-            listElement.innerHTML = listElement.innerHTML + `
-                <li>${inputValue} <button onclick = "deleteRow()">Delete</button></li>
-            `;
-            // clear input box
-            document.getElementById('input').value = "";
-
-            //focus on input box
-            input.focus();
-
-        }
         //Delete list item
         function deleteRow(){
             event.target.parentNode.remove();    //OR this.parentNode.remove();          //'this' here is delete button element 
