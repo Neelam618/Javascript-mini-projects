@@ -19,18 +19,40 @@
 
 
     <script>
-        document.getElementById('btn').addEventListener('click', add);
+        document.getElementById('btn').addEventListener('click', addUsingInnerHtml);
 
         function add(){
-            let input = document.getElementById('input').value;   //grabs inputted text
-            let newText = document.createTextNode(input);      // creates text node 
-            let newElement = document.createElement('li');    //creates new li tag in html doc
-            newElement.appendChild(newText);         // joins text inside tags
-            document.getElementById('list').appendChild(newElement);
+            let inputValue = document.getElementById('input').value;   //grabs inputted text
+    
+            //creates new li tag in html doc
+            let liElement = document.createElement('li');
+            liElement.innerText = inputValue;
+
+            // add delete btn
+            let deleteBtn = document.createElement('button');
+            deleteBtn.innerText = "Delete";
+            liElement.appendChild(deleteBtn);
+
+            // append li element
+            document.getElementById('list').appendChild(liElement);
+    
+            // clear input box
             document.getElementById('input').value = "";
         }
 
+        function addUsingInnerHtml(){
+            let inputValue = document.getElementById('input').value;   //grabs inputted text
+    
+            let listElement = document.getElementById('list');
+            listElement.innerHTML = listElement.innerHTML + `
+                <li>${inputValue} <button>Delete</button> </li>
+            `;
+    
+            // clear input box
+            document.getElementById('input').value = "";
+        }
 
+        
 
     </script>
 </body>
