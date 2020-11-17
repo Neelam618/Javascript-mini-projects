@@ -10,7 +10,7 @@
             <h1>To-Do List</h1>
                     <input type="text" id="input" placeholder="Add an item">
                     <button type="button" id="addBtn">Add</button>
-                    <div id="error-msg" style="display: none;">Please add an item</div>
+                    <div id="error-msg" style="display: none; color: red;">Please add an item</div>
             <ol id="list"></ol>
         </div>
 
@@ -60,12 +60,14 @@
         // }
 
         function verifyAndAdd(){
-            displayOrHideErrorMsg();
+            // displayOrHideErrorMsg();
+            let errorMsg = document.getElementById('error-msg');
             if(input.value == ""){
-                // alert("Input is empty");
+                errorMsg.style.display = "block";
                 input.focus();
             }
-            else{
+            else if(document.getElementById('input').value !== ""){
+                errorMsg.style.display = "none";
                 add();
             }
         }
@@ -91,16 +93,16 @@
         
 
 
-        function displayOrHideErrorMsg(){
-            let errorMsg = document.getElementById('error-msg');
+        // function displayOrHideErrorMsg(){
+        //     let errorMsg = document.getElementById('error-msg');
 
-            if (document.getElementById('input').value == ""){
-                errorMsg.style.display = "block";
-            }
-            else if(document.getElementById('input').value !== ""){
-                errorMsg.style.display = "none";
-            }
-        }
+        //     if (document.getElementById('input').value == ""){
+        //         errorMsg.style.display = "block";
+        //     }
+        //     else if(document.getElementById('input').value !== ""){
+        //         errorMsg.style.display = "none";
+        //     }
+        // }
 
 
     </script>
