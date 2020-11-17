@@ -10,7 +10,7 @@
             <h1>To-Do List</h1>
                     <input type="text" id="input" placeholder="Add an item">
                     <button type="button" id="addBtn">Add</button>
-                    <div id="error-msg"></div>
+                    <div id="error-msg" style="display: none;">Please add an item</div>
             <ol id="list"></ol>
         </div>
 
@@ -60,7 +60,7 @@
         // }
 
         function verifyAndAdd(){
-            errorMsg();
+            displayOrHideErrorMsg();
             if(input.value == ""){
                 // alert("Input is empty");
                 input.focus();
@@ -91,13 +91,14 @@
         
 
 
-        function errorMsg(){
+        function displayOrHideErrorMsg(){
+            let errorMsg = document.getElementById('error-msg');
 
-            if (input.value == ""){
-                document.getElementById('error-msg').innerText = "Please add an item";
+            if (document.getElementById('input').value == ""){
+                errorMsg.style.display = "block";
             }
-            else if(inputValue !== ""){
-                document.getElementById('error-msg').innerHTML = "";
+            else if(document.getElementById('input').value !== ""){
+                errorMsg.style.display = "none";
             }
         }
 
