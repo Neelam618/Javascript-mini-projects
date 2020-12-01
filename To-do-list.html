@@ -15,9 +15,8 @@
         </div>
 
     <script>
-        if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
              retrieveLiElement();
-        }
+        
         input.focus();
  
         //Add click event listener to button and call function
@@ -32,8 +31,8 @@
 
             // add delete btn in li element
             let deleteBtn = document.createElement('button');
+            deleteBtn.className = "deletebtn";     //deleteBtn.classList.add("deletebtn");
             deleteBtn.innerText = "Delete"; 
-
             deleteBtn.addEventListener('click', deleteRow);
             //join button element inside li element
             liElement.appendChild(deleteBtn);
@@ -45,9 +44,7 @@
             document.getElementById('list').appendChild(createLiElement());
             // clear input box
             document.getElementById('input').value = "";
-
             storeLiElement();
-
             //focus on input box
             input.focus();
 
@@ -85,7 +82,7 @@
         function deleteRow(){
             event.target.parentNode.remove();    //OR this.parentNode.remove();          //'this' here is delete button element 
             // console.log(event.target);
-            storeLiElement();
+            storeLiElement();   //to display remaining li elements in storage
             input.focus();            
         }
         
@@ -120,10 +117,14 @@
             localStorage.setItem("key", storedLiElement);
             
         }
-
+        
         function retrieveLiElement(){
-            // Retrieve
             document.getElementById("list").innerHTML = localStorage.getItem("key");
+            //attach click event listener to button element while copying it from storage
+            let allDeleteBtns = document.getElementsByClassName('deletebtn');
+            for(let i = 0; i < allDeleteBtns.length; i++){
+                allDeleteBtns[i].addEventListener('click', deleteRow);
+            }
         }
 
     </script>
