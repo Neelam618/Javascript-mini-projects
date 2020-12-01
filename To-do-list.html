@@ -15,6 +15,8 @@
         </div>
 
     <script>
+             retrieveLiElement();
+        
         input.focus();
  
         //Add click event listener to button and call function
@@ -29,6 +31,7 @@
 
             // add delete btn in li element
             let deleteBtn = document.createElement('button');
+            deleteBtn.className = "deletebtn";     //deleteBtn.classList.add("deletebtn");
             deleteBtn.innerText = "Delete"; 
             deleteBtn.addEventListener('click', deleteRow);
             //join button element inside li element
@@ -41,8 +44,10 @@
             document.getElementById('list').appendChild(createLiElement());
             // clear input box
             document.getElementById('input').value = "";
+            storeLiElement();
             //focus on input box
             input.focus();
+
         }
         // //Alternative function to add()
         // function addUsingInnerHtml(){
@@ -69,6 +74,7 @@
             else if(document.getElementById('input').value !== ""){
                 errorMsg.style.display = "none";
                 add();
+                
             }
         }
         
@@ -76,6 +82,7 @@
         function deleteRow(){
             event.target.parentNode.remove();    //OR this.parentNode.remove();          //'this' here is delete button element 
             // console.log(event.target);
+            storeLiElement();   //to display remaining li elements in storage
             input.focus();            
         }
         
@@ -104,6 +111,21 @@
         //     }
         // }
 
+        function storeLiElement(){
+            let storedLiElement = document.getElementById('list').innerHTML;
+             // Store
+            localStorage.setItem("key", storedLiElement);
+            
+        }
+        
+        function retrieveLiElement(){
+            document.getElementById("list").innerHTML = localStorage.getItem("key");
+            //attach click event listener to button element while copying it from storage
+            let allDeleteBtns = document.getElementsByClassName('deletebtn');
+            for(let i = 0; i < allDeleteBtns.length; i++){
+                allDeleteBtns[i].addEventListener('click', deleteRow);
+            }
+        }
 
     </script>
 </body>
