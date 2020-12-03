@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        table{
+            margin-top: 100px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        .container{
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
+    <fieldset>
+        <legend>Expense Tracker</legend>
+        <div class="container">
+            Name <input type="text" id="inputname">
+            Date <input type="date" id="inputdate">
+            Amount <input type="text" id="inputamount">
+            <button id="addbtn">Add Expense</button>
+        </div>
+    </fieldset>
+
+    <table id="table">
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Amount</th>
+        </tr>
+    </table>
+
+    <script>
+        inputname.focus();
+        document.getElementById('addbtn').addEventListener('click', function(){
+            // let expenseName = document.getElementById('inputname').value;
+            // let date = document.getElementById('inputdate').value;
+            // let amount = document.getElementById('inputamount').value;
+
+            document.getElementById('table').appendChild(createTableRow());
+           
+
+            document.getElementsByClassName('name').innerText = document.getElementById('inputname').value;
+            document.getElementsByClassName('date').innerText = document.getElementById('inputdate').value;
+            document.getElementsByClassName('amount').innerText = document.getElementById('inputamount').value;
+
+            document.getElementById('inputname').value = "";
+            document.getElementById('inputdate').value = "";
+            document.getElementById('inputamount').value = "";
+            inputname.focus();
+        })
+
+        function createTableRow(){
+            let expenseName = document.getElementById('inputname').value;
+            let date = document.getElementById('inputdate').value;
+            let amount = document.getElementById('inputamount').value; 
+
+            //creates new tr tag in table element
+            let newTableRow = document.createElement('tr');
+
+            //creates new td tag in tr 
+            let newTableData1 = document.createElement('td');
+            newTableData1.className = "name";     //newTableData1.classList.add("name");
+            newTableData1.innerText = expenseName;
+     
+            let newTableData2 = document.createElement('td');
+            newTableData2.className = "date";   
+            newTableData2.innerText = date;
+ 
+            let newTableData3 = document.createElement('td');
+            newTableData3.className = "amount";     
+            newTableData3.innerText = amount;
+
+            newTableRow.appendChild(newTableData1);
+            newTableRow.appendChild(newTableData2);
+            newTableRow.appendChild(newTableData3);
+            //  console.log(newTableRow);
+            return newTableRow;
+
+        }
+    </script>
+</body>
+</html>
