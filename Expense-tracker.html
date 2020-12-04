@@ -26,7 +26,7 @@
         <div class="container">
             Name <input type="text" id="inputname">
             Date <input type="date" id="inputdate">
-            Amount <input type="text" id="inputamount">
+            Amount <input type="number" id="inputamount">
             <button id="addbtn">Add Expense</button>
         </div>
     </fieldset>
@@ -36,19 +36,16 @@
             <th>Name</th>
             <th>Date</th>
             <th>Amount</th>
+            
         </tr>
     </table>
 
     <script>
         inputname.focus();
         document.getElementById('addbtn').addEventListener('click', function(){
-            // let expenseName = document.getElementById('inputname').value;
-            // let date = document.getElementById('inputdate').value;
-            // let amount = document.getElementById('inputamount').value;
 
             document.getElementById('table').appendChild(createTableRow());
            
-
             document.getElementsByClassName('name').innerText = document.getElementById('inputname').value;
             document.getElementsByClassName('date').innerText = document.getElementById('inputdate').value;
             document.getElementsByClassName('amount').innerText = document.getElementById('inputamount').value;
@@ -66,6 +63,7 @@
 
             //creates new tr tag in table element
             let newTableRow = document.createElement('tr');
+            newTableRow.className = "tableRow";   
 
             //creates new td tag in tr 
             let newTableData1 = document.createElement('td');
@@ -80,13 +78,26 @@
             newTableData3.className = "amount";     
             newTableData3.innerText = amount;
 
+            let newTableData4 = document.createElement('td');
+            let deleteBtn = document.createElement('button');
+            deleteBtn.className = "deletebtn";     
+            newTableData4.appendChild(deleteBtn);
+            deleteBtn.innerText = "Delete";
+       
             newTableRow.appendChild(newTableData1);
             newTableRow.appendChild(newTableData2);
             newTableRow.appendChild(newTableData3);
-            //  console.log(newTableRow);
-            return newTableRow;
+            newTableRow.appendChild(newTableData4);
 
+            return newTableRow;
         }
+        document.addEventListener('click', function(event){
+            if(event.target.className == 'deletebtn'){
+            event.target.parentNode.parentNode.remove();    //OR this.parentNode.remove();        //'this' here is delete button element 
+            
+            }
+        });
+       
     </script>
 </body>
 </html>
