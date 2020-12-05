@@ -15,19 +15,21 @@
         </div>
 
     <script>
-             retrieveLiElement();
+            retrieveLiElement();
         
         input.focus();
  
         //Add click event listener to button and call function
         document.getElementById('addBtn').addEventListener('click', verifyAndAdd);
 
-        function createLiElement(){
-            let inputValue = document.getElementById('input').value;   //grabs inputted text value
+        function createLiElement(inputValue){
     
             //creates new li tag in ol
             let liElement = document.createElement('li');
-            liElement.innerText = inputValue;
+
+            let liTxtElement = document.createElement('span');
+            liTxtElement.innerText = inputValue;
+            liTxtElement.className = 'liText';
 
             // add delete btn in li element
             let deleteBtn = document.createElement('button');
@@ -35,19 +37,21 @@
             deleteBtn.innerText = "Delete"; 
             deleteBtn.addEventListener('click', deleteRow);
             //join button element inside li element
+            liElement.appendChild(liTxtElement);
             liElement.appendChild(deleteBtn);
+
             return liElement;
         }
 
         function add(){
             // join li element in ol
-            document.getElementById('list').appendChild(createLiElement());
+            let valueFromInput = document.getElementById('input').value;
+            document.getElementById('list').appendChild(createLiElement(valueFromInput));
             // clear input box
             document.getElementById('input').value = "";
             storeLiElement();
             //focus on input box
             input.focus();
-
         }
         // //Alternative function to add()
         // function addUsingInnerHtml(){
@@ -112,20 +116,21 @@
         // }
 
         function storeLiElement(){
-            let storedLiElement = document.getElementById('list').innerHTML;
-             // Store
-            localStorage.setItem("key", storedLiElement);
+            let items = [];
+            document.querySelectorAll('#list li .liText').forEach(item => {
+                items.push(item.textContent);
+            });
+            localStorage.setItem("items", JSON.stringify(items));
             
         }
         
         function retrieveLiElement(){
-            document.getElementById("list").innerHTML = localStorage.getItem("key");
-            //attach click event listener to button element while copying it from storage
-            let allDeleteBtns = document.getElementsByClassName('deletebtn');
-            for(let i = 0; i < allDeleteBtns.length; i++){
-                allDeleteBtns[i].addEventListener('click', deleteRow);
-            }
+            let itemsFromLS = JSON.parse(localStorage.getItem("items"));
+            itemsFromLS.forEach(itemText => {
+                document.getElementById('list').appendChild(createLiElement(itemText));
+            });
         }
+           
 
     </script>
 </body>
