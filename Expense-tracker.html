@@ -44,6 +44,7 @@
 
     <script>
     //    retrieveTdText();
+    document.getElementById('inputname').focus();
         
         document.getElementById('addbtn').addEventListener('click', verifyAndAdd);
         
@@ -105,9 +106,11 @@
             if(inputName || inputDate || inputAmount !== ""){
                 errorMsg.style.display = "none";
                 addTableRow();
+                document.getElementById('inputname').focus();
             }
             else if(inputName || inputDate || inputAmount == ""){
                 errorMsg.style.display = "block";
+                document.getElementById('inputname').focus();
             }
         }
         
@@ -117,6 +120,16 @@
             storeTdText();   //to display remaining li elements in storage
                     
         }
+
+        // Execute a function when the user releases a key on the keyboard
+        document.getElementById('inputamount').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
+            // Number 13 is the "Enter" key on the keyboard
+            if(event.keyCode === 13){                                   
+            // Trigger the add button element with a click
+            verifyAndAdd();
+            }
+        });
+
         // function storeTdText(){                   //not efficient way
         //     let nameLS = [];
         //     document.querySelectorAll('table .tablerow .name').forEach(item => {
@@ -153,6 +166,10 @@
         //         })
         //     }
         // }
+        //click add button on keyboard enter
+
+
+        
 
         function storeTdText(){
           
