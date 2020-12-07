@@ -54,7 +54,6 @@
             document.getElementById('inputname').value = "";
             document.getElementById('inputdate').value = "";
             document.getElementById('inputamount').value = "";
-            storeTdText();
     
         }
 
@@ -94,6 +93,9 @@
             newTableRow.appendChild(newTableData2);
             newTableRow.appendChild(newTableData3);
             newTableRow.appendChild(newTableData4);
+
+            RetrieveAndStoreItemsInLS(name, date, amount);
+
            
             return newTableRow;
         }
@@ -103,21 +105,22 @@
                 inputDate = document.getElementById('inputdate').value,
                 inputAmount = document.getElementById('inputamount').value,
                 errorMsg = document.getElementById('error-msg');
-            if(inputName || inputDate || inputAmount !== ""){
-                errorMsg.style.display = "none";
-                addTableRow();
+            if(!inputName || !inputDate || !inputAmount){
+                errorMsg.style.display = "block";
+                // addTableRow();
                 document.getElementById('inputname').focus();
             }
-            else if(inputName || inputDate || inputAmount == ""){
-                errorMsg.style.display = "block";
+            else {
+                errorMsg.style.display = "none";
                 document.getElementById('inputname').focus();
+                addTableRow();
             }
         }
         
         function deleteRow(event){
             event.target.parentNode.parentNode.remove();    //OR this.parentNode.remove();          //'this' here is delete button element 
             // console.log(event.target);
-            storeTdText();   //to display remaining li elements in storage
+            RetrieveAndStoreItemsInLS();   //to display remaining li elements in storage
                     
         }
 
@@ -171,27 +174,16 @@
 
         
 
-        function storeTdText(){
+        function RetrieveAndStoreItemsInLS(name, date, amount){
           
-            let obj = {}, array = [];
-            // document.getElementsByClassName('name').forEach(nameElement => {
-            //      obj.push(nameElement.textContent);
-            // });
-            // document.getElementsByClassName('date').forEach(dateElement => {
-            //      obj.push(dateElement.textContent);
-            // });
-            // document.getElementsByClassName('amount').forEach(dateElement => {
-            //      obj.push(dateElement.textContent);
-            // });
-                array.forEach(element => {
-
-                    obj.name = "";
-                    obj.date = "";
-                    obj.amount = "";
-                });
-           
-            array.push(obj);
-            localStorage.setItem('item', JSON.stringify(array));
+           let obj = {
+               name: name,
+               date: date,
+               amount: amount
+           }
+           let items = JSON.parse(localStorage.getItem('items')) || [];
+            items.push(obj);
+            localStorage.setItem("items", JSON.stringify(items));
         }
 
 
