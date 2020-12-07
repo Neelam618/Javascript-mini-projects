@@ -24,10 +24,12 @@
     <fieldset>
         <legend>Expense Tracker</legend>
         <div class="container">
+            <div id="error-msg" style="display: none; color: red;">*Please add the details</div>
             Name <input type="text" id="inputname">
             Date <input type="date" id="inputdate">
             Amount <input type="number" id="inputamount">
             <button id="addbtn">Add Expense</button>
+
         </div>
     </fieldset>
 
@@ -41,34 +43,36 @@
     </table>
 
     <script>
-        inputname.focus();
-        document.getElementById('addbtn').addEventListener('click', function(){
-
-            document.getElementById('table').appendChild(createTableRow());
-           
-            document.getElementsByClassName('name').innerText = document.getElementById('inputname').value;
-            document.getElementsByClassName('date').innerText = document.getElementById('inputdate').value;
-            document.getElementsByClassName('amount').innerText = document.getElementById('inputamount').value;
+    //    retrieveTdText();
+        
+        document.getElementById('addbtn').addEventListener('click', verifyAndAdd);
+        
+        function addTableRow(){
+            document.getElementById('table').appendChild(onAddBtnClick());    //adds table row in table element
 
             document.getElementById('inputname').value = "";
             document.getElementById('inputdate').value = "";
             document.getElementById('inputamount').value = "";
-            inputname.focus();
-        })
+            storeTdText();
+    
+        }
 
-        function createTableRow(){
+        function onAddBtnClick() {
             let expenseName = document.getElementById('inputname').value;
             let date = document.getElementById('inputdate').value;
             let amount = document.getElementById('inputamount').value; 
-
+            return createTableRow(expenseName, date, amount);
+        }
+        
+        function createTableRow(name, date, amount){
             //creates new tr tag in table element
             let newTableRow = document.createElement('tr');
-            newTableRow.className = "tableRow";   
+            newTableRow.className = "tablerow"; 
 
             //creates new td tag in tr 
             let newTableData1 = document.createElement('td');
             newTableData1.className = "name";     //newTableData1.classList.add("name");
-            newTableData1.innerText = expenseName;
+            newTableData1.innerText = name;
      
             let newTableData2 = document.createElement('td');
             newTableData2.className = "date";   
@@ -83,21 +87,99 @@
             deleteBtn.className = "deletebtn";     
             newTableData4.appendChild(deleteBtn);
             deleteBtn.innerText = "Delete";
-       
+            deleteBtn.addEventListener('click', deleteRow);
+
             newTableRow.appendChild(newTableData1);
             newTableRow.appendChild(newTableData2);
             newTableRow.appendChild(newTableData3);
             newTableRow.appendChild(newTableData4);
-
+           
             return newTableRow;
         }
-        document.addEventListener('click', function(event){
-            if(event.target.className == 'deletebtn'){
-            event.target.parentNode.parentNode.remove();    //OR this.parentNode.remove();        //'this' here is delete button element 
-            
+
+        function verifyAndAdd(){
+            let inputName = document.getElementById('inputname').value,
+                inputDate = document.getElementById('inputdate').value,
+                inputAmount = document.getElementById('inputamount').value,
+                errorMsg = document.getElementById('error-msg');
+            if(inputName || inputDate || inputAmount !== ""){
+                errorMsg.style.display = "none";
+                addTableRow();
             }
-        });
-       
+            else if(inputName || inputDate || inputAmount == ""){
+                errorMsg.style.display = "block";
+            }
+        }
+        
+        function deleteRow(event){
+            event.target.parentNode.parentNode.remove();    //OR this.parentNode.remove();          //'this' here is delete button element 
+            // console.log(event.target);
+            storeTdText();   //to display remaining li elements in storage
+                    
+        }
+        // function storeTdText(){                   //not efficient way
+        //     let nameLS = [];
+        //     document.querySelectorAll('table .tablerow .name').forEach(item => {
+        //         nameLS.push(item.textContent);                                            
+        //     });
+        //     localStorage.setItem('name', JSON.stringify(nameLS));                                    
+
+        //     let dateLS =[];
+        //     document.querySelectorAll('table .tablerow .date').forEach(item => {
+        //         dateLS.push(item.textContent);
+        //     });
+        //     localStorage.setItem('date', JSON.stringify(dateLS));
+
+        //     let amountLS =[];
+        //     document.querySelectorAll('table .tablerow .amount').forEach(item => {
+        //         amountLS.push(item.textContent);
+        //     });
+        //     localStorage.setItem('amount', JSON.stringify(amountLS));
+        // }
+    
+        // function retrieveTdText(){
+        //     let namesFromLS = JSON.parse(localStorage.getItem('name'));
+        //     let datesFromLS = JSON.parse(localStorage.getItem('date'));
+        //     let amountsFromLS = JSON.parse(localStorage.getItem('amount'));
+        //     if (namesFromLS && datesFromLS && amountsFromLS) {
+        //         for (let i=0; i < namesFromLS.length; i++) {
+        //             document.getElementById('table').appendChild(createTableRow(namesFromLS[i], datesFromLS[i], amountsFromLS[i]));
+        //         }
+        //     }
+        //     let items = JSON.parse(localStorage.getItem('items'));
+        //     if (items) {
+        //         items.forEach(item => {
+        //             document.getElementById('table').appendChild(createTableRow(item.name, item.date, item.amount));
+        //         })
+        //     }
+        // }
+
+        function storeTdText(){
+          
+            let obj = {}, array = [];
+            // document.getElementsByClassName('name').forEach(nameElement => {
+            //      obj.push(nameElement.textContent);
+            // });
+            // document.getElementsByClassName('date').forEach(dateElement => {
+            //      obj.push(dateElement.textContent);
+            // });
+            // document.getElementsByClassName('amount').forEach(dateElement => {
+            //      obj.push(dateElement.textContent);
+            // });
+                array.forEach(element => {
+
+                    obj.name = "";
+                    obj.date = "";
+                    obj.amount = "";
+                });
+           
+            array.push(obj);
+            localStorage.setItem('item', JSON.stringify(array));
+        }
+
+
+ 
+        
     </script>
 </body>
 </html>
