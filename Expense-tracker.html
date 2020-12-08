@@ -43,7 +43,8 @@
     </table>
 
     <script>
-    //    retrieveTdText();
+       retrieveItemsFromLS();
+       
     document.getElementById('inputname').focus();
         
         document.getElementById('addbtn').addEventListener('click', verifyAndAdd);
@@ -61,10 +62,10 @@
             let expenseName = document.getElementById('inputname').value;
             let date = document.getElementById('inputdate').value;
             let amount = document.getElementById('inputamount').value; 
-            return createTableRow(expenseName, date, amount);
+            return createTableRow(expenseName, date, amount, true);
         }
         
-        function createTableRow(name, date, amount){
+        function createTableRow(name, date, amount, storeInLS){
             //creates new tr tag in table element
             let newTableRow = document.createElement('tr');
             newTableRow.className = "tablerow"; 
@@ -84,7 +85,10 @@
 
             let newTableData4 = document.createElement('td');
             let deleteBtn = document.createElement('button');
-            deleteBtn.className = "deletebtn";     
+            deleteBtn.className = "deletebtn";  
+
+            deleteBtn.id = 'deleteBtn' + document.getElementsByClassName('tablerow').length;;
+
             newTableData4.appendChild(deleteBtn);
             deleteBtn.innerText = "Delete";
             deleteBtn.addEventListener('click', deleteRow);
@@ -94,9 +98,9 @@
             newTableRow.appendChild(newTableData3);
             newTableRow.appendChild(newTableData4);
 
-            RetrieveAndStoreItemsInLS(name, date, amount);
-
-           
+            if(storeInLS){         //if storeInLS is true
+            storeItemsInLS(name, date, amount);
+            }
             return newTableRow;
         }
 
@@ -120,12 +124,21 @@
         function deleteRow(event){
             event.target.parentNode.parentNode.remove();    //OR this.parentNode.remove();          //'this' here is delete button element 
             // console.log(event.target);
-            RetrieveAndStoreItemsInLS();   //to display remaining li elements in storage
-                    
+          
+            let items = JSON.parse(localStorage.getItem('items')) || [];
+
+            let indexToDelete = parseInt(event.target.id.replace('deleteBtn', ""));
+            items.splice(indexToDelete, 1);                     //deletes 1 item starting from indexToDelete
+            localStorage.setItem("items", JSON.stringify(items));
+
+            // to reassign ids to delete button element ( because id's sequence will be changed after deleting middle row)
+            document.getElementsByClassName("tablerow").forEach((row, index) => {
+            row.getElementsByClassName("deletebtn")[0].id = "deleteBtn" + index;
+            });
         }
 
         // Execute a function when the user releases a key on the keyboard
-        document.getElementById('inputamount').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
+        document.getElementById('inputamount').addEventListener("keyup", function(event) {            //you can also remove event parameter and it works
             // Number 13 is the "Enter" key on the keyboard
             if(event.keyCode === 13){                                   
             // Trigger the add button element with a click
@@ -174,7 +187,7 @@
 
         
 
-        function RetrieveAndStoreItemsInLS(name, date, amount){
+        function storeItemsInLS(name, date, amount){
           
            let obj = {
                name: name,
@@ -185,7 +198,14 @@
             items.push(obj);
             localStorage.setItem("items", JSON.stringify(items));
         }
-
+        function retrieveItemsFromLS(){
+            let itemsfromLS = JSON.parse(localStorage.getItem('items'));
+            if (itemsfromLS) {
+                itemsfromLS.forEach((obj, index) => {
+                    document.getElementById('table').appendChild(createTableRow(obj.name, obj.date, obj.amount, false));
+                })
+            }
+        }
 
  
         
