@@ -41,7 +41,7 @@
             
         </tr>
     </table>
-
+    <div>Total amount :<span id = "totalamount"></span></div>
     <script>
        retrieveItemsFromLS();
        
@@ -99,7 +99,7 @@
             newTableRow.appendChild(newTableData4);
 
             if(storeInLS){         //if storeInLS is true
-            storeItemsInLS(name, date, amount);
+                storeItemsAndAmountSumInLS(name, date, amount);
             }
             return newTableRow;
         }
@@ -127,8 +127,8 @@
           
             let items = JSON.parse(localStorage.getItem('items')) || [];
 
-            let indexToDelete = parseInt(event.target.id.replace('deleteBtn', ""));
-            items.splice(indexToDelete, 1);                     //deletes 1 item starting from indexToDelete
+            let indexToDelete = parseInt(event.target.id.replace('deleteBtn', ""));   //means eg. from id deleteBtn0 only 0 will stay 
+            items.splice(indexToDelete, 1);                     //deletes 1 delete button element starting from indexToDelete
             localStorage.setItem("items", JSON.stringify(items));
 
             // to reassign ids to delete button element ( because id's sequence will be changed after deleting middle row)
@@ -184,20 +184,29 @@
         // }
         //click add button on keyboard enter
 
-
-        
-
-        function storeItemsInLS(name, date, amount){
+        function storeItemsAndAmountSumInLS(name, date, amount){
           
-           let obj = {
-               name: name,
-               date: date,
-               amount: amount
-           }
-           let items = JSON.parse(localStorage.getItem('items')) || [];
+            let obj = {
+                name: name,
+                date: date,
+                amount: amount
+            }
+            //store row items
+            let items = JSON.parse(localStorage.getItem('items')) || [];
             items.push(obj);
             localStorage.setItem("items", JSON.stringify(items));
+           
+           // calculate amount sum
+            let totalAmt=0;
+            for(let i = 0; i< items.length; i++) { 
+                totalAmt = totalAmt + +items[i].amount;     //use + to convert string i.e. amount into integer
+            }
+            // store amount sum
+            document.getElementById('totalamount').innerText = totalAmt;
+            localStorage.setItem('amountsum',  JSON.stringify(totalAmt));
         }
+
+
         function retrieveItemsFromLS(){
             let itemsfromLS = JSON.parse(localStorage.getItem('items'));
             if (itemsfromLS) {
@@ -206,8 +215,6 @@
                 })
             }
         }
-
- 
         
     </script>
 </body>
