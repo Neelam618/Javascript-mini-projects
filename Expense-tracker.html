@@ -43,9 +43,10 @@
     </table>
     <div>Total amount :<span id = "totalamount"></span></div>
     <script>
-       retrieveItemsFromLS();
+        retrieveItemsFromLS();
+        calculateAmountSum();
        
-    document.getElementById('inputname').focus();
+        document.getElementById('inputname').focus();
         
         document.getElementById('addbtn').addEventListener('click', verifyAndAdd);
         
@@ -55,6 +56,7 @@
             document.getElementById('inputname').value = "";
             document.getElementById('inputdate').value = "";
             document.getElementById('inputamount').value = "";
+            calculateAmountSum();
     
         }
 
@@ -99,7 +101,7 @@
             newTableRow.appendChild(newTableData4);
 
             if(storeInLS){         //if storeInLS is true
-                storeItemsAndAmountSumInLS(name, date, amount);
+                storeAmountSumInLS(name, date, amount);
             }
             return newTableRow;
         }
@@ -132,7 +134,7 @@
             localStorage.setItem("items", JSON.stringify(items));
 
             // to reassign ids to delete button element ( because id's sequence will be changed after deleting middle row)
-            document.getElementsByClassName("tablerow").forEach((row, index) => {
+            document.querySelectorAll("table .tablerow").forEach((row, index) => {
             row.getElementsByClassName("deletebtn")[0].id = "deleteBtn" + index;
             });
         }
@@ -184,7 +186,7 @@
         // }
         //click add button on keyboard enter
 
-        function storeItemsAndAmountSumInLS(name, date, amount){
+        function storeAmountSumInLS(name, date, amount){
           
             let obj = {
                 name: name,
@@ -196,14 +198,12 @@
             items.push(obj);
             localStorage.setItem("items", JSON.stringify(items));
            
-           // calculate amount sum
-            let totalAmt=0;
-            for(let i = 0; i< items.length; i++) { 
-                totalAmt = totalAmt + +items[i].amount;     //use + to convert string i.e. amount into integer
-            }
-            // store amount sum
-            document.getElementById('totalamount').innerText = totalAmt;
-            localStorage.setItem('amountsum',  JSON.stringify(totalAmt));
+        //    // calculate amount sum
+        //     let totalAmt=0;
+        //     for(let i = 0; i< items.length; i++) { 
+        //         totalAmt = totalAmt + +items[i].amount;     //use + to convert string i.e. amount into integer
+        //     }
+        
         }
 
 
@@ -213,7 +213,19 @@
                 itemsfromLS.forEach((obj, index) => {
                     document.getElementById('table').appendChild(createTableRow(obj.name, obj.date, obj.amount, false));
                 })
+            let totalAmtFromLS = JSON.parse(localStorage.getItem('amountsum'));
+            document.getElementById('totalamount').innerText = totalAmtFromLS;
+            
             }
+        }
+
+        function calculateAmountSum(){
+            let total = 0;
+            document.querySelectorAll('table .tablerow .amount').forEach(item => {
+            total = total + parseInt(item.textContent);
+            
+            });
+            document.getElementById('totalamount').innerText = total;
         }
         
     </script>
