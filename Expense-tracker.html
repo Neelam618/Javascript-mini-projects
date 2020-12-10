@@ -25,7 +25,7 @@
         <legend>Expense Tracker</legend>
         <div class="container">
             <div id="error-msg" style="display: none; color: red;">*Please add the details</div>
-            Name <input type="text" id="inputname">
+            How/where did you spend? <input type="text" id="inputname">
             Date <input type="date" id="inputdate">
             Amount <input type="number" id="inputamount">
             <button id="addbtn">Add Expense</button>
@@ -57,7 +57,6 @@
             document.getElementById('inputdate').value = "";
             document.getElementById('inputamount').value = "";
             calculateAmountSum();
-    
         }
 
         function onAddBtnClick() {
@@ -101,7 +100,7 @@
             newTableRow.appendChild(newTableData4);
 
             if(storeInLS){         //if storeInLS is true
-                storeAmountSumInLS(name, date, amount);
+                storeItemsInLS(name, date, amount);
             }
             return newTableRow;
         }
@@ -137,18 +136,53 @@
             document.querySelectorAll("table .tablerow").forEach((row, index) => {
             row.getElementsByClassName("deletebtn")[0].id = "deleteBtn" + index;
             });
+            calculateAmountSum();
         }
 
+        //click add button on keyboard enter
         // Execute a function when the user releases a key on the keyboard
-        document.getElementById('inputamount').addEventListener("keyup", function(event) {            //you can also remove event parameter and it works
+        document.getElementById('inputamount').addEventListener("keyup", 
+        function(event) {            //you can also remove event parameter and it works
             // Number 13 is the "Enter" key on the keyboard
             if(event.keyCode === 13){                                   
-            // Trigger the add button element with a click
-            verifyAndAdd();
+                // Trigger the add button element with a click
+                verifyAndAdd();
             }
         });
 
-        // function storeTdText(){                   //not efficient way
+        function storeItemsInLS(name, date, amount){
+          
+            let obj = {
+                name: name,
+                date: date,
+                amount: amount
+            }
+            //store row items
+            let items = JSON.parse(localStorage.getItem('items')) || [];
+            items.push(obj);
+            localStorage.setItem("items", JSON.stringify(items));
+        }
+
+        function retrieveItemsFromLS(){
+            let itemsfromLS = JSON.parse(localStorage.getItem('items'));
+            if (itemsfromLS) {
+                itemsfromLS.forEach((obj, index) => {
+                    document.getElementById('table').appendChild(createTableRow(obj.name, obj.date, obj.amount, false));
+                })
+            let totalAmtFromLS = JSON.parse(localStorage.getItem('amountsum'));
+            document.getElementById('totalamount').innerText = totalAmtFromLS;
+            }
+        }
+
+        function calculateAmountSum(){
+            let total = 0;
+            document.querySelectorAll('table .tablerow .amount').forEach(item => {
+            total = total + parseInt(item.textContent);
+            });
+            document.getElementById('totalamount').innerText = total;
+        }
+
+    // function storeTdText(){                   //not efficient way
         //     let nameLS = [];
         //     document.querySelectorAll('table .tablerow .name').forEach(item => {
         //         nameLS.push(item.textContent);                                            
@@ -183,51 +217,7 @@
         //             document.getElementById('table').appendChild(createTableRow(item.name, item.date, item.amount));
         //         })
         //     }
-        // }
-        //click add button on keyboard enter
-
-        function storeAmountSumInLS(name, date, amount){
-          
-            let obj = {
-                name: name,
-                date: date,
-                amount: amount
-            }
-            //store row items
-            let items = JSON.parse(localStorage.getItem('items')) || [];
-            items.push(obj);
-            localStorage.setItem("items", JSON.stringify(items));
-           
-        //    // calculate amount sum
-        //     let totalAmt=0;
-        //     for(let i = 0; i< items.length; i++) { 
-        //         totalAmt = totalAmt + +items[i].amount;     //use + to convert string i.e. amount into integer
-        //     }
-        
-        }
-
-
-        function retrieveItemsFromLS(){
-            let itemsfromLS = JSON.parse(localStorage.getItem('items'));
-            if (itemsfromLS) {
-                itemsfromLS.forEach((obj, index) => {
-                    document.getElementById('table').appendChild(createTableRow(obj.name, obj.date, obj.amount, false));
-                })
-            let totalAmtFromLS = JSON.parse(localStorage.getItem('amountsum'));
-            document.getElementById('totalamount').innerText = totalAmtFromLS;
-            
-            }
-        }
-
-        function calculateAmountSum(){
-            let total = 0;
-            document.querySelectorAll('table .tablerow .amount').forEach(item => {
-            total = total + parseInt(item.textContent);
-            
-            });
-            document.getElementById('totalamount').innerText = total;
-        }
-        
+        // }    
     </script>
 </body>
 </html>
