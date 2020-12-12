@@ -1,3 +1,18 @@
+function focusInput() {
+    document.getElementById('inputtext').focus();
+}
+focusInput();
+
+        //click add button on keyboard enter
+        // Execute a function when the user releases a key on the keyboard
+        document.getElementById('inputtext').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
+            // Number 13 is the "Enter" key on the keyboard
+            if(event.keyCode === 13){                                   
+            // Trigger the add button element with a click
+            verifyAndDisplay();
+            }
+        });
+
 document.getElementById('addbtn').addEventListener('click', verifyAndDisplay);
 
 function verifyAndDisplay(){
@@ -9,7 +24,7 @@ function verifyAndDisplay(){
     }
     else{
         errorMsg.style.display = "block";
-        document.getElementById('inputtext').focus();
+        focusInput();
     }
 }
 
@@ -19,7 +34,7 @@ function displayNote(){
         document.getElementById('row').appendChild(createNoteCard(valueFromInput));
     
     document.getElementById('inputtext').value = "";
-    document.getElementById('inputtext').focus();
+    focusInput();
 
 }
 
