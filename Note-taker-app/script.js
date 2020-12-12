@@ -13,25 +13,42 @@ function verifyAndDisplay(){
     }
 }
 
-function createNoteCard(inputValue){
-    let cardDiv = document.createElement('div');
-    cardDiv.className = 'notecard';
-    let notePara = document.createElement('p');
-    notePara.className = 'notepara';
-
-    notePara.innerText = inputValue;
-
-    cardDiv.appendChild(notePara);
-
-    return cardDiv;
-
-
-}
 function displayNote(){
 
-    let inputvalue = document.getElementById('inputtext').value;
-    document.getElementById('display-container').appendChild(createNoteCard(inputvalue));
+    let valueFromInput = document.getElementById('inputtext').value;
+        document.getElementById('row').appendChild(createNoteCard(valueFromInput));
+    
     document.getElementById('inputtext').value = "";
     document.getElementById('inputtext').focus();
 
 }
+
+function createNoteCard(inputValue){
+
+    let columnInRow = document.createElement('div');
+    columnInRow.className ='col';
+
+    let card = document.createElement('div');
+    card.className = 'card';
+
+    let cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+
+    let cardText = document.createElement('p');
+    cardText.className = 'card-text';
+    cardText.innerText = inputValue;
+
+    let detailbtn = document.createElement('button');
+    detailbtn.className = 'btn btn-primary';
+    detailbtn.innerText = 'View detail';
+
+    cardBody.appendChild(cardText);
+    cardBody.appendChild(detailbtn);
+    card.appendChild(cardBody);
+    columnInRow.appendChild(card);
+    
+    return columnInRow;
+
+
+}
+

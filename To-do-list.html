@@ -22,6 +22,30 @@
         //Add click event listener to button and call function
         document.getElementById('addBtn').addEventListener('click', verifyAndAdd);
 
+        function verifyAndAdd(){
+            // displayOrHideErrorMsg();
+            let errorMsg = document.getElementById('error-msg');
+            if(input.value == ""){
+                errorMsg.style.display = "block";
+                input.focus();
+            }
+            else if(document.getElementById('input').value !== ""){
+                errorMsg.style.display = "none";
+                add();
+            }
+        }
+
+        function add(){
+            // join li element in ol
+            let valueFromInput = document.getElementById('input').value;
+            document.getElementById('list').appendChild(createLiElement(valueFromInput));
+            // clear input box
+            document.getElementById('input').value = "";
+            storeLiElement();
+            //focus on input box
+            input.focus();
+        }
+
         function createLiElement(inputValue){
     
             //creates new li tag in ol
@@ -43,16 +67,6 @@
             return liElement;
         }
 
-        function add(){
-            // join li element in ol
-            let valueFromInput = document.getElementById('input').value;
-            document.getElementById('list').appendChild(createLiElement(valueFromInput));
-            // clear input box
-            document.getElementById('input').value = "";
-            storeLiElement();
-            //focus on input box
-            input.focus();
-        }
         // //Alternative function to add()
         // function addUsingInnerHtml(){
         //     let inputValue = document.getElementById('input').value;   //grabs inputted text
@@ -67,20 +81,6 @@
         //     //focus on input box
         //     input.focus();
         // }
-
-        function verifyAndAdd(){
-            // displayOrHideErrorMsg();
-            let errorMsg = document.getElementById('error-msg');
-            if(input.value == ""){
-                errorMsg.style.display = "block";
-                input.focus();
-            }
-            else if(document.getElementById('input').value !== ""){
-                errorMsg.style.display = "none";
-                add();
-                
-            }
-        }
         
         //Delete list item
         function deleteRow(){
@@ -100,9 +100,6 @@
             verifyAndAdd();
             }
         });
-
-        
-
 
         // function displayOrHideErrorMsg(){
         //     let errorMsg = document.getElementById('error-msg');
@@ -130,8 +127,6 @@
                 document.getElementById('list').appendChild(createLiElement(itemText));
             });
         }
-           
-
     </script>
 </body>
 </html>
