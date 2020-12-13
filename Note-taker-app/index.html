@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     <title>Note Taker App</title>
 </head>
 <body>
     <center>
-        <div class="container">
-            <h1>Note Taker</h1>
+        <div class="container-fluid">
+            <h1 class="my-3">Note Taker</h1>
             <div id="error-msg" style="display: none; color: red">*Please add a note</div>
-            <div>Note: <input type="text" id="inputtext" placeholder="Write your note here"></div><br>
+            Note title: <input type="text" id="inputtitle" placeholder="Write your title here">
+            Note: <input type="text" id="inputtext" class="my-3" placeholder="Write your note here"><br>
+
             <a href="#" class="btn btn-primary" id="addbtn">Add Note</a><hr>
         </div>
     </center>
-    
-        <div class="row row-cols-1 row-cols-lg-3 row-cols-sm-2 g-4" id="row">
-
-
+        <div class="container-fluid">
+            <div class="row row-cols-1 row-cols-lg-3 row-cols-sm-2 g-4" id="row"></div>
         </div>
 
     <script src="script.js"></script>

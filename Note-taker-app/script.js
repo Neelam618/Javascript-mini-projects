@@ -44,7 +44,7 @@ function createNoteCard(inputValue){
     columnInRow.className ='col';
 
     let card = document.createElement('div');
-    card.className = 'card';
+    card.className = 'card h-200';
 
     let cardBody = document.createElement('div');
     cardBody.className = 'card-body';
