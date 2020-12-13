@@ -3,15 +3,15 @@ function focusInput() {
 }
 focusInput();
 
-        //click add button on keyboard enter
-        // Execute a function when the user releases a key on the keyboard
-        document.getElementById('inputtext').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
-            // Number 13 is the "Enter" key on the keyboard
-            if(event.keyCode === 13){                                   
-            // Trigger the add button element with a click
-            verifyAndDisplay();
-            }
-        });
+//click add button on keyboard enter
+// Execute a function when the user releases a key on the keyboard
+document.getElementById('inputtext').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
+    // Number 13 is the "Enter" key on the keyboard
+    if(event.keyCode === 13){                                   
+    // Trigger the add button element with a click
+    verifyAndDisplay();
+    }
+});
 
 document.getElementById('addbtn').addEventListener('click', verifyAndDisplay);
 
@@ -56,6 +56,10 @@ function createNoteCard(inputValue){
     let detailbtn = document.createElement('button');
     detailbtn.className = 'btn btn-primary';
     detailbtn.innerText = 'View detail';
+    detailbtn.setAttribute("data-bs-toggle", "modal");
+    detailbtn.setAttribute("data-bs-target", "#exampleModal");
+    detailbtn.addEventListener('click', viewModal);
+
 
     cardBody.appendChild(cardText);
     cardBody.appendChild(detailbtn);
@@ -63,7 +67,11 @@ function createNoteCard(inputValue){
     columnInRow.appendChild(card);
     
     return columnInRow;
-
-
 }
 
+function viewModal(event){
+    let paraText = event.target.previousElementSibling.textContent
+    document.getElementsByClassName('modal-body')[0].innerHTML = paraText;
+}
+
+    

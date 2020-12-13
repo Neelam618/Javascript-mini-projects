@@ -5,3 +5,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.modal-body{
+
+    overflow-wrap: anywhere;
+
+}
