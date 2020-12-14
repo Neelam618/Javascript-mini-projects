@@ -1,13 +1,13 @@
 retrieveNoteText();
 
 function focusInput() {
-    document.getElementById('inputtext').focus();
+    document.getElementById('inputdes').focus();
 }
 focusInput();
 
 //click add button on keyboard enter
 // Execute a function when the user releases a key on the keyboard
-document.getElementById('inputtext').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
+document.getElementById('inputdes').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
     // Number 13 is the "Enter" key on the keyboard
     if(event.keyCode === 13){                                   
     // Trigger the add button element with a click
@@ -23,7 +23,7 @@ function verifyAndDisplay(){
     let desErrorMsg = document.getElementById('error-msg-des');
 
     let inputTitleValue = document.getElementById('inputtitle').value;
-    let inputDesValue = document.getElementById('inputtext').value;
+    let inputDesValue = document.getElementById('inputdes').value;
 
     if(!inputTitleValue){
         titleErrorMsg.style.display = "block";
@@ -44,11 +44,11 @@ function verifyAndDisplay(){
 
 function displayNote(){
 
-    let valueFromTextInput = document.getElementById('inputtext').value;
+    let valueFromTextInput = document.getElementById('inputdes').value;
     let valueFromTitleInput = document.getElementById('inputtitle').value;
  
     document.getElementById('row').appendChild(createNoteCard(valueFromTextInput, valueFromTitleInput));
-    document.getElementById('inputtext').value = "";
+    document.getElementById('inputdes').value = "";
     document.getElementById('inputtitle').value = "";
 
     storeNoteText();
@@ -56,7 +56,7 @@ function displayNote(){
 
 }
 
-function createNoteCard(inputTextValue, inputTitleValue){
+function createNoteCard(inputDesValue, inputTitleValue){
 
     let columnInRow = document.createElement('div');
     columnInRow.className ='col';
@@ -73,7 +73,7 @@ function createNoteCard(inputTextValue, inputTitleValue){
 
     let cardText = document.createElement('p');
     cardText.className = 'card-text';
-    cardText.innerText = inputTextValue;
+    cardText.innerText = inputDesValue;
 
     let detailBtn = document.createElement('button');
     detailBtn.className = 'btn btn-primary';
@@ -98,7 +98,10 @@ function createNoteCard(inputTextValue, inputTitleValue){
 }
 
 function viewModal(event){
-    let paraText = event.target.previousElementSibling.textContent
+    let paraText = event.target.previousElementSibling.textContent;
+    let titleText = event.target.parentNode.firstChild.textContent;
+    
+    document.getElementsByClassName('modal-title')[0].innerHTML = titleText;
     document.getElementsByClassName('modal-body')[0].innerHTML = paraText;
 }
 
