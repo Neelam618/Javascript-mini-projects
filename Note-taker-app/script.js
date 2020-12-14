@@ -1,3 +1,5 @@
+// retrieveNoteText();
+
 function focusInput() {
     document.getElementById('inputtext').focus();
 }
@@ -35,6 +37,7 @@ function displayNote(){
     
     document.getElementById('inputtext').value = "";
     focusInput();
+    storeNoteText();
 
 }
 
@@ -53,16 +56,23 @@ function createNoteCard(inputValue){
     cardText.className = 'card-text';
     cardText.innerText = inputValue;
 
-    let detailbtn = document.createElement('button');
-    detailbtn.className = 'btn btn-primary';
-    detailbtn.innerText = 'View detail';
-    detailbtn.setAttribute("data-bs-toggle", "modal");
-    detailbtn.setAttribute("data-bs-target", "#exampleModal");
-    detailbtn.addEventListener('click', viewModal);
+    let detailBtn = document.createElement('button');
+    detailBtn.className = 'btn btn-primary';
+    detailBtn.innerText = 'View detail';
+    detailBtn.setAttribute("data-bs-toggle", "modal");
+    detailBtn.setAttribute("data-bs-target", "#exampleModal");
+    detailBtn.addEventListener('click', viewModal);
 
+    // <button type="button" class="btn btn-primary">Delete</button>
+    let deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn btn-primary mx-2';
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.addEventListener('click', deleteNote);
 
+    
     cardBody.appendChild(cardText);
-    cardBody.appendChild(detailbtn);
+    cardBody.appendChild(detailBtn);
+    cardBody.appendChild(deleteBtn); 
     card.appendChild(cardBody);
     columnInRow.appendChild(card);
     
@@ -72,6 +82,31 @@ function createNoteCard(inputValue){
 function viewModal(event){
     let paraText = event.target.previousElementSibling.textContent
     document.getElementsByClassName('modal-body')[0].innerHTML = paraText;
+}
+
+function deleteNote(event){
+    event.target.parentNode.parentNode.remove();
+    storeNoteText(); 
+    document.getElementById('row').innerHTML = "";
+    retrieveNoteText();
+}
+
+function storeNoteText(){
+    let notes = [];
+    document.querySelectorAll('#row .card-body .card-text').forEach(item => {
+        notes.push(item.textContent);
+    });
+    localStorage.setItem("items", JSON.stringify(notes));
+}
+
+function retrieveNoteText(){
+    let allNoteTextFromLS = JSON.parse(localStorage.getItem("items"));
+    if(allNoteTextFromLS){
+        allNoteTextFromLS.forEach(noteText => {
+            document.getElementById('row').appendChild(createNoteCard(noteText));
+        });
+    }   
+
 }
 
     
