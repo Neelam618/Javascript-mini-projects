@@ -1,4 +1,4 @@
-// retrieveNoteText();
+retrieveNoteText();
 
 function focusInput() {
     document.getElementById('inputtext').focus();
@@ -19,29 +19,44 @@ document.getElementById('addbtn').addEventListener('click', verifyAndDisplay);
 
 function verifyAndDisplay(){
     
-    let errorMsg = document.getElementById('error-msg');
-    if(document.getElementById('inputtext').value !== ""){
-            errorMsg.style.display = "none";
-            displayNote();
+    let titleErrorMsg = document.getElementById('error-msg-title');
+    let desErrorMsg = document.getElementById('error-msg-des');
+
+    let inputTitleValue = document.getElementById('inputtitle').value;
+    let inputDesValue = document.getElementById('inputtext').value;
+
+    if(!inputTitleValue){
+        titleErrorMsg.style.display = "block";
+    }
+    else if(!inputDesValue){
+        if(inputTitleValue){
+            desErrorMsg.style.display = "block";
+        }
     }
     else{
-        errorMsg.style.display = "block";
+        titleErrorMsg.style.display = "none";
+        desErrorMsg.style.display = "none";
+
+        displayNote();
         focusInput();
     }
 }
 
 function displayNote(){
 
-    let valueFromInput = document.getElementById('inputtext').value;
-        document.getElementById('row').appendChild(createNoteCard(valueFromInput));
-    
+    let valueFromTextInput = document.getElementById('inputtext').value;
+    let valueFromTitleInput = document.getElementById('inputtitle').value;
+ 
+    document.getElementById('row').appendChild(createNoteCard(valueFromTextInput, valueFromTitleInput));
     document.getElementById('inputtext').value = "";
-    focusInput();
+    document.getElementById('inputtitle').value = "";
+
     storeNoteText();
+    focusInput();
 
 }
 
-function createNoteCard(inputValue){
+function createNoteCard(inputTextValue, inputTitleValue){
 
     let columnInRow = document.createElement('div');
     columnInRow.className ='col';
@@ -52,9 +67,13 @@ function createNoteCard(inputValue){
     let cardBody = document.createElement('div');
     cardBody.className = 'card-body';
 
+    let cardTitle = document.createElement('h3');
+    cardTitle.className = 'card-title';
+    cardTitle.innerText = inputTitleValue;
+
     let cardText = document.createElement('p');
     cardText.className = 'card-text';
-    cardText.innerText = inputValue;
+    cardText.innerText = inputTextValue;
 
     let detailBtn = document.createElement('button');
     detailBtn.className = 'btn btn-primary';
@@ -63,13 +82,12 @@ function createNoteCard(inputValue){
     detailBtn.setAttribute("data-bs-target", "#exampleModal");
     detailBtn.addEventListener('click', viewModal);
 
-    // <button type="button" class="btn btn-primary">Delete</button>
     let deleteBtn = document.createElement('button');
     deleteBtn.className = 'btn btn-primary mx-2';
     deleteBtn.innerText = 'Delete';
     deleteBtn.addEventListener('click', deleteNote);
 
-    
+    cardBody.appendChild(cardTitle);
     cardBody.appendChild(cardText);
     cardBody.appendChild(detailBtn);
     cardBody.appendChild(deleteBtn); 
@@ -87,6 +105,7 @@ function viewModal(event){
 function deleteNote(event){
     event.target.parentNode.parentNode.remove();
     storeNoteText(); 
+    //to retrieve note cards on a clean slate
     document.getElementById('row').innerHTML = "";
     retrieveNoteText();
 }
