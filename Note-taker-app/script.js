@@ -1,7 +1,7 @@
 retrieveNoteText();
 
 function focusInput() {
-    document.getElementById('inputdes').focus();
+    document.getElementById('inputtitle').focus();
 }
 focusInput();
 
@@ -44,19 +44,19 @@ function verifyAndDisplay(){
 
 function displayNote(){
 
-    let valueFromTextInput = document.getElementById('inputdes').value;
     let valueFromTitleInput = document.getElementById('inputtitle').value;
+    let valueFromDesInput = document.getElementById('inputdes').value;
  
-    document.getElementById('row').appendChild(createNoteCard(valueFromTextInput, valueFromTitleInput));
+    document.getElementById('row').appendChild(createNoteCard(valueFromTitleInput, valueFromDesInput));
     document.getElementById('inputdes').value = "";
     document.getElementById('inputtitle').value = "";
 
-    storeNoteText();
+    storeNoteText(valueFromTitleInput, valueFromDesInput);
     focusInput();
 
 }
 
-function createNoteCard(inputDesValue, inputTitleValue){
+function createNoteCard(inputTitleValue, inputDesValue){
 
     let columnInRow = document.createElement('div');
     columnInRow.className ='col';
@@ -83,8 +83,9 @@ function createNoteCard(inputDesValue, inputTitleValue){
     detailBtn.addEventListener('click', viewModal);
 
     let deleteBtn = document.createElement('button');
-    deleteBtn.className = 'btn btn-primary mx-2';
+    deleteBtn.className = 'deletebtn btn btn-primary mx-2';
     deleteBtn.innerText = 'Delete';
+    deleteBtn.id = 'deleteBtn' + document.getElementsByClassName('card').length;;
     deleteBtn.addEventListener('click', deleteNote);
 
     cardBody.appendChild(cardTitle);
@@ -100,35 +101,47 @@ function createNoteCard(inputDesValue, inputTitleValue){
 function viewModal(event){
     let paraText = event.target.previousElementSibling.textContent;
     let titleText = event.target.parentNode.firstChild.textContent;
-    
+
     document.getElementsByClassName('modal-title')[0].innerHTML = titleText;
     document.getElementsByClassName('modal-body')[0].innerHTML = paraText;
 }
 
 function deleteNote(event){
+
     event.target.parentNode.parentNode.remove();
-    storeNoteText(); 
-    //to retrieve note cards on a clean slate
-    document.getElementById('row').innerHTML = "";
-    retrieveNoteText();
-}
+    
+    let items = JSON.parse(localStorage.getItem('items')) || [];
 
-function storeNoteText(){
-    let notes = [];
-    document.querySelectorAll('#row .card-body .card-text').forEach(item => {
-        notes.push(item.textContent);
+    let indexToDelete = parseInt(event.target.id.replace('deleteBtn', ""));   //means eg. from id deleteBtn0 only 0 will stay //suppose targeted button has id='deleteBtn1':  step1:[deleteBtn0, deleteBtn1, deleteBtn2] step2:[deleteBtn0, 1, deleteBtn2]
+    items.splice(indexToDelete, 1);       //deletes 1 delete button element starting from indexToDelete   //step3: [deleteBtn0, deleteBtn2]
+
+    localStorage.setItem("items", JSON.stringify(items));
+
+    // to reassign ids to delete button element ( because id's sequence will be changed after deleting middle row)
+    document.querySelectorAll(".row .card").forEach((card, index) => {
+    card.getElementsByClassName("deletebtn")[0].id = "deleteBtn" + index;
     });
-    localStorage.setItem("items", JSON.stringify(notes));
+    location.reload();
 }
 
-function retrieveNoteText(){
-    let allNoteTextFromLS = JSON.parse(localStorage.getItem("items"));
-    if(allNoteTextFromLS){
-        allNoteTextFromLS.forEach(noteText => {
-            document.getElementById('row').appendChild(createNoteCard(noteText));
-        });
-    }   
+function storeNoteText(noteTitle, noteDes){
+    let obj ={
+        title: noteTitle,
+        des: noteDes
+    }
+    let notes =  JSON.parse(localStorage.getItem('items')) || [];
+    notes.push(obj);
+    localStorage.setItem("items", JSON.stringify(notes));
 
+}
+function retrieveNoteText(){
+
+    let itemsfromLS = JSON.parse(localStorage.getItem('items'));
+    if (itemsfromLS) {
+        itemsfromLS.forEach(obj => {
+            document.getElementById('row').appendChild(createNoteCard(obj.title, obj.des));
+        });
+    }
 }
 
     
