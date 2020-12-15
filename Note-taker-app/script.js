@@ -7,7 +7,7 @@ focusInput();
 
 //click add button on keyboard enter
 // Execute a function when the user releases a key on the keyboard
-document.getElementById('inputdes').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
+document.getElementById('exampleFormControlTextarea1').addEventListener("keyup", function(event) {                                //you can also remove event parameter and it works
     // Number 13 is the "Enter" key on the keyboard
     if(event.keyCode === 13){                                   
     // Trigger the add button element with a click
@@ -21,34 +21,33 @@ function verifyAndDisplay(){
     
     let titleErrorMsg = document.getElementById('error-msg-title');
     let desErrorMsg = document.getElementById('error-msg-des');
+    desErrorMsg.style.display = "none";
+    titleErrorMsg.style.display = "none";
 
     let inputTitleValue = document.getElementById('inputtitle').value;
-    let inputDesValue = document.getElementById('inputdes').value;
+    let inputDesValue = document.getElementById('exampleFormControlTextarea1').value;
 
     if(!inputTitleValue){
         titleErrorMsg.style.display = "block";
+        return;
     }
-    else if(!inputDesValue){
-        if(inputTitleValue){
-            desErrorMsg.style.display = "block";
-        }
-    }
-    else{
-        titleErrorMsg.style.display = "none";
-        desErrorMsg.style.display = "none";
 
-        displayNote();
-        focusInput();
+    if(!inputDesValue){
+        desErrorMsg.style.display = "block";
+        return;
     }
+
+    displayNote();
+    focusInput();
 }
 
 function displayNote(){
 
     let valueFromTitleInput = document.getElementById('inputtitle').value;
-    let valueFromDesInput = document.getElementById('inputdes').value;
+    let valueFromDesInput = document.getElementById('exampleFormControlTextarea1').value;
  
     document.getElementById('row').appendChild(createNoteCard(valueFromTitleInput, valueFromDesInput));
-    document.getElementById('inputdes').value = "";
+    document.getElementById('exampleFormControlTextarea1').value = "";
     document.getElementById('inputtitle').value = "";
 
     storeNoteText(valueFromTitleInput, valueFromDesInput);
@@ -99,11 +98,11 @@ function createNoteCard(inputTitleValue, inputDesValue){
 }
 
 function viewModal(event){
-    let paraText = event.target.previousElementSibling.textContent;
-    let titleText = event.target.parentNode.firstChild.textContent;
+    let paraText = event.target.previousElementSibling.innerText;
+    let titleText = event.target.parentNode.firstChild.innerText;
 
     document.getElementsByClassName('modal-title')[0].innerHTML = titleText;
-    document.getElementsByClassName('modal-body')[0].innerHTML = paraText;
+    document.getElementsByClassName('modal-text')[0].innerHTML = paraText;
 }
 
 function deleteNote(event){

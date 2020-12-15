@@ -8,18 +8,18 @@
     <title>Note Taker App</title>
 </head>
 <body>
-    <center>
-        <div class="container-fluid">
+        <div class="container-fluid title">
             <h1 class="my-3">Note Taker</h1>
-            <div id="error-msg-title" style="display: none; color: red">*Please add a note title</div>
-            <div id="error-msg-des" style="display: none; color: red">*Please add a note description</div>
-
-            Note title: <input type="text" id="inputtitle" placeholder="Write your title here">
-            Note: <input type="text" id="inputdes" class="my-3" placeholder="Write your note here"><br>
-
-            <a href="#" class="btn btn-primary" id="addbtn">Add Note</a><hr>
+                <div id="error-msg-title" style="display: none; color: red">*Please add a note title</div>
+                <div id="error-msg-des" style="display: none; color: red">*Please add a note description</div>
+                <div class="w-50">
+                    Note title: <input type="text" class="w-75" id="inputtitle" placeholder="Write your title here">
+                    <!-- <label for="exampleFormControlTextarea1" class="form-label">Note:</label> -->
+                    <textarea class="form-control mt-3" id="exampleFormControlTextarea1" rows="3" placeholder="Write your note here"></textarea>
+                </div>
+            <a href="#" class="btn btn-primary my-3" id="addbtn">Add Note</a>
         </div>
-    </center>
+    <hr>
         <div class="container-fluid">
             <div class="row row-cols-1 row-cols-lg-3 row-cols-sm-2 g-4" id="row"></div>
         </div>
@@ -32,7 +32,7 @@
                 <h5 class="modal-title" id="exampleModalLabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body"></div>
+            <div class="modal-body"><pre class="modal-text"></pre></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
